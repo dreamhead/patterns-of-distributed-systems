@@ -17,7 +17,7 @@
 * 领导者和追随者（Leader and Followers）
 * 租约（Lease）
 * 低水位标记（Low-Water Mark）
-* Quorum
+* [Quorum](content/quorum.md)
 * 请求管道（Request Pipeline）
 * 分段日志（Segmented Log）
 * 单一 Socket 通道（Single Socket Channel）

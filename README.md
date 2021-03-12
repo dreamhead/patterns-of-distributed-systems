@@ -14,7 +14,7 @@
 * [心跳（HeartBeat）](content/heartbeat.md)
 * [高水位标记（High-Water Mark）](content/high-water-mark.md)
 * [幂等接收者（Idempotent Receiver）](content/idempotent-receiver.md)
-* 领导者和追随者（Leader and Followers）
+* [领导者和追随者（Leader and Followers）](content/leader-and-followers.md)
 * 租约（Lease）
 * 低水位标记（Low-Water Mark）
 * Quorum
@@ -49,9 +49,10 @@
 | Generation Clock | 世代时钟       |
 | group membership | 分组成员       |
 | partitions       | 分区          |
-| liveness         | 活性          |
+| liveness         | 活跃情况       |
 | round trip       | 往返          |
 | in-flight        | 在途          |
+| time to live     | 存活时间       |
 
 
 

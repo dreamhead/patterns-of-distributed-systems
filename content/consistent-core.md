@@ -10,11 +10,12 @@ https://martinfowler.com/articles/patterns-of-distributed-systems/consistent-cor
 
 ## 问题
 
-集群需要处理大规模的数据，就需要越来越多的服务器。对于服务器集群而言，有一些通用性的需求，比如，选择某个特定的服务器成为某个任务的主节点、管理分组成员信息、将数据分区映射到服务器上等等。这些需求都需要强一致性的保证，也就是说，要有线性一致性。实现本身还要有对失效的容忍。一种常见的方式是，使用一种基于 [Quorum](https://martinfowler.com/articles/patterns-of-distributed-systems/quorum.html) 且支持失效容忍的一致性算法。但是，基于 Quorum 的系统的吞吐量会随着集群规模的变大而降低。
+集群需要处理大规模的数据，就需要越来越多的服务器。对于服务器集群而言，有一些通用性的需求，比如，选择某个特定的服务器成为某个任务的主节点、管理分组成员信息、将数据分区映射到服务器上等等。这些需求都需要强一致性的保证，也就是说，要有线性一致性。实现本身还要有对失效的容忍。一种常见的方式是，使用一种基于 [Quorum](https://martinfowler.com/articles/patterns-of-distributed-systems/quorum.html) 且支持失效容忍的一致性算法。但是，基于 Quorum 的系统，其吞吐量会随着集群规模的变大而降低。
 
 ## 解决方案
 
 实现一个三五个节点的小集群，提供线性一致性的保证，同时支持失效容忍[1]。一个单独数据集群可以使用小的一致性集群管理元数据，采用类似于[租约（Lease）](https://martinfowler.com/articles/patterns-of-distributed-systems/time-bound-lease.html) 之类的原语在集群范围内进行决策。这样一来，数据集群就可以增长到很大的规模，但仍然可以使用小的元数据集群来保证某些需要强一致性的操作的执行。
+
 
 ![一致性内核](../image/ConsistentCore.png)
 <center>图1：一致性内核</center>

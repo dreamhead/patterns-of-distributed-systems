@@ -14,7 +14,7 @@ https://martinfowler.com/articles/patterns-of-distributed-systems/consistent-cor
 
 ## 解决方案
 
-实现一个三五个节点的小集群，提供线性一致性的保证，同时支持失效容忍[1]。一个单独数据集群可以使用小的一致性集群管理元数据，采用类似于 [Lease](https://martinfowler.com/articles/patterns-of-distributed-systems/time-bound-lease.html) 之类的原语在集群范围内进行决策。这样一来，数据集群就可以增长到很大的规模，但仍然可以使用小的元数据集群来保证某些需要强一致性的操作的执行。
+实现一个三五个节点的小集群，提供线性一致性的保证，同时支持失效容忍[1]。一个单独数据集群可以使用小的一致性集群管理元数据，采用类似于[租约（Lease）](https://martinfowler.com/articles/patterns-of-distributed-systems/time-bound-lease.html) 之类的原语在集群范围内进行决策。这样一来，数据集群就可以增长到很大的规模，但仍然可以使用小的元数据集群来保证某些需要强一致性的操作的执行。
 
 ![一致性内核](../image/ConsistentCore.png)
 <center>图1：一致性内核</center>
@@ -34,7 +34,7 @@ public interface ConsistentCore {
 
 ### 元数据存储
 
-存储可以用诸如 Raft 之类的共识算法实现。它是可复制的预写日志的一个样例实现，其中的复制由[领导者和追随者（Leader and Followers）](https://martinfowler.com/articles/patterns-of-distributed-systems/leader-follower.html) 进行处理，使用 [Quorum](https://martinfowler.com/articles/patterns-of-distributed-systems/quorum.html) 的话，可以使用[高水位标记（High-Water Mark）](https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html)追踪成功的复制。
+存储可以用诸如 Raft 之类的共识算法实现。它是可复制的预写日志的一个样例实现，其中的复制由[领导者和追随者（Leader and Followers）](https://martinfowler.com/articles/patterns-of-distributed-systems/leader-follower.html) 进行处理，使用 [Quorum](https://martinfowler.com/articles/patterns-of-distributed-systems/quorum.html) 的话，可以使用[高水位标记（High-Water Mark）](high-water-mark.md)追踪成功的复制。
 
 #### 支持层级结构的存储
 
@@ -142,7 +142,7 @@ private RequestOrResponse sendConnectRequest(SingleSocketChannel socketChannel) 
 
 #### 处理重复请求
 
-在失效的场景下，客户端可以重新连接新的领导者，重新发送请求。但是，如果这些请求在失效的领导者失效之前已经处理过了，这就有可能产生重复。因此，至关重要的一点是，服务器需要有一种机制，忽略重复的请求。[幂等接收者（Idempotent Receiver）](https://martinfowler.com/articles/patterns-of-distributed-systems/idempotent-receiver.html)模式就是用来实现重复检测的。
+在失效的场景下，客户端可以重新连接新的领导者，重新发送请求。但是，如果这些请求在失效的领导者失效之前已经处理过了，这就有可能产生重复。因此，至关重要的一点是，服务器需要有一种机制，忽略重复的请求。[幂等接收者（Idempotent Receiver）](idempotent-receiver.md)模式就是用来实现重复检测的。
 
 使用[租约（Lease）](https://martinfowler.com/articles/patterns-of-distributed-systems/time-bound-lease.html)，可以在一组服务器上协调任务。同样的技术也可以用于实现分组成员信息和失效检测机制。
 

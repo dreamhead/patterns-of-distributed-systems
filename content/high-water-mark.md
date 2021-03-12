@@ -1,4 +1,4 @@
-# 高水位标记
+# 高水位标记（High-Water Mark）
 
 **原文**
 
@@ -46,7 +46,7 @@ leader (class ReplicationModule...)
   }
 ```
 
-追随者会处理复制请求，将日志条目追加到本地日志中。在成功地追加日志条目之后，它们会把最新的日志条目索引回给领导者。应答中还包括服务器当前的[时代时钟（Generation Clock）](https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html)。
+追随者会处理复制请求，将日志条目追加到本地日志中。在成功地追加日志条目之后，它们会把最新的日志条目索引回给领导者。应答中还包括服务器当前的[时代时钟（Generation Clock）](generation-clock.md)。
 
 ```java
 follower (class ReplicationModule...)
@@ -120,7 +120,7 @@ class ReplicationModule…
 ![日志截断](../image/truncation.png)
 <center>图4：日志截断</center>
 
-暂停之后，重新启动或是重新加入集群，服务器都会先去寻找新的领导者。然后，它会显式地查询当前的高水位标记，将日志截断至高水位标记，然后，从领导者那里获取超过高水位标记的所有条目。类似 RAFT 之类的复制算法有一些方式找出冲突项，比如，查看自己日志里的日志条目，对比请求里的日志条目。如果日志条目拥有相同的索引，但[时代时钟（Generation Clock）](https://martinfowler.com/articles/patterns-of-distributed-systems/generation.html)更低的话，就删除这些条目。
+暂停之后，重新启动或是重新加入集群，服务器都会先去寻找新的领导者。然后，它会显式地查询当前的高水位标记，将日志截断至高水位标记，然后，从领导者那里获取超过高水位标记的所有条目。类似 RAFT 之类的复制算法有一些方式找出冲突项，比如，查看自己日志里的日志条目，对比请求里的日志条目。如果日志条目拥有相同的索引，但[时代时钟（Generation Clock）](generation-clock.md)更低的话，就删除这些条目。
 
 ```java
 class ReplicationModule…

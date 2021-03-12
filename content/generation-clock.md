@@ -16,7 +16,7 @@ https://martinfowler.com/articles/patterns-of-distributed-systems/generation.htm
 
 ## 解决方案
 
-维护一个单调递增的数字，表示服务器的世代。每次选出新的领导者，这个世代都应该递增。即便服务器重启，这个世代也应该是可用的，因此，它应该存储在[预写日志（Write-Ahead Log）](https://martinfowler.com/articles/patterns-of-distributed-systems/wal.html)每一个条目里。在[高水位标记（High-Water Mark）](https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html)里，我们讨论过，追随者会使用这个信息找出日志中冲突的部分。
+维护一个单调递增的数字，表示服务器的世代。每次选出新的领导者，这个世代都应该递增。即便服务器重启，这个世代也应该是可用的，因此，它应该存储在[预写日志（Write-Ahead Log）](https://martinfowler.com/articles/patterns-of-distributed-systems/wal.html)每一个条目里。在[高水位标记（High-Water Mark）](high-water-mark.md)里，我们讨论过，追随者会使用这个信息找出日志中冲突的部分。
 
 启动时，服务器要从日志中读取最后一个已知的世代。
 
@@ -110,4 +110,4 @@ Old leader (class ReplicationModule...)
 
 ### Kafka 中的 Epoch
 
-[Kafka](https://kafka.apache.org/) 每次为集群选出新的控制器，都会创建一个 epoch 数，将其存在 Zookeeper 里。epoch 会包含在集群里从控制器发到其它服务器的每个请求中。它还维护了另外一个 epoch，称为 [LeaderEpoch](https://cwiki.apache.org/confluence/display/KAFKA/KIP-101+-+Alter+Replication+Protocol+to+use+Leader+Epoch+rather+than+High+Watermark+for+Truncation)，以便了解一个分区的追随者是否落后于其[高水位标记（High-Water Mark）](https://martinfowler.com/articles/patterns-of-distributed-systems/high-watermark.html)。
+[Kafka](https://kafka.apache.org/) 每次为集群选出新的控制器，都会创建一个 epoch 数，将其存在 Zookeeper 里。epoch 会包含在集群里从控制器发到其它服务器的每个请求中。它还维护了另外一个 epoch，称为 [LeaderEpoch](https://cwiki.apache.org/confluence/display/KAFKA/KIP-101+-+Alter+Replication+Protocol+to+use+Leader+Epoch+rather+than+High+Watermark+for+Truncation)，以便了解一个分区的追随者是否落后于其[高水位标记（High-Water Mark）](high-water-mark.md)。
